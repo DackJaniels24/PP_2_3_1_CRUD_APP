@@ -3,13 +3,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-</head>
+    <title>Users</title>
 <body>
+<table th:bgcolor="ghostwhite" th:cellpadding="10" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Age</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td><a th:href="@{/show(id=${user.getId()})}" th:text="${user.getId()}">Id</a></td>
+        <td><a th:href="@{/show(name=${user.getName()})}" th:text="${user.getName()}">Name</a></td>
+        <td><a th:href="@{/show(lastName=${user.getLastName()})}" th:text="${user.getLastName()}">LastName</a></td>
+        <td><a th:href="@{/show(age=${user.getAge()})}" th:text="${user.getAge()}">Age</a></td>
+    </tr>
+</table>
+</head>
+
 <div>
-    <th:block th:each="msg : ${messages}">
-        <h1 th:text="${msg}"></h1>
-    </th:block>
+
 </div>
+<a th:href="new">Add User</a>
 </body>
 </html>
