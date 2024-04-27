@@ -1,42 +1,39 @@
 package web.userDAO;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
-
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Component
-public class UserDaoImpl implements UserDAO {
-    public List<User> list;
-    private static int USERS_COUNT;
-    {
-        list = new ArrayList<>();
-        list.add(new User(++USERS_COUNT,"Alex", "Frost", 18));
-        list.add(new User(++USERS_COUNT,"John", "Wayne", 19));
-        list.add(new User(++USERS_COUNT,"Tom", "Ford", 20));
-    }
+public class UserDaoImpl {
+@PersistenceContext(unitName = "entityManager")
+private EntityManager entityManager;
+
     public List<User>index(){
-        return list;
+        return entityManager.createQuery("select u from User u", User.class)
+                .getResultList();
     }
-    public User show(int id) {
-        return list.stream().filter(user -> user.getId() == id).findAny().orElse(null);
+    public User show(Integer id) {
+        TypedQuery<User> q = entityManager.createQuery("select u from User u where u.id=:id", User.class);
+        q.setParameter("id", id);
+         return q.getResultList().stream().findAny().orElse(null);
     }
-    @Override
-    public void add(User user) {
-    }
+    @Transactional
     public void remove(int id) {
-        list.removeIf(u -> u.getId() == id);
+        entityManager.remove(show(id));
     }
-    public void update(int id, User updatedUser) {
-        User userToBeUpdated = show(id);
-        userToBeUpdated.setName(updatedUser.getName());
-        userToBeUpdated.setLastName(updatedUser.getLastName());
-        userToBeUpdated.setAge(updatedUser.getAge());
+
+    @Transactional
+    public void update(int id, User user) {
+        entityManager.merge(user);
     }
+
+    @Transactional
     public void save(User user) {
-        user.setId(++USERS_COUNT);
-        list.add(user);
+        entityManager.persist(user);
     }
 }

@@ -1,14 +1,18 @@
 package web.model;
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "crud_users")
+@Entity
+@Table(name = "user")
 public class User {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "id")
     private int id;
+   @Column(name = "name")
     private String name;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "age")
     private int age;
 
     public User() {
@@ -20,7 +24,6 @@ public class User {
         this.lastName = lastName;
         this.age = age;
     }
-
 
     public int getId() {
         return id;
@@ -54,13 +57,4 @@ public class User {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
-    }
 }
