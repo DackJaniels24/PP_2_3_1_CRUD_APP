@@ -5,13 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.userDAO.UserDaoImpl;
+import web.service.UserService;
+import web.service.UserServiceImpl;
+
 
 @Controller
 @RequestMapping (value = "/")
 public class UsersController {
     @Autowired
-    UserDaoImpl userDao = new UserDaoImpl();
+    private UserService userDao = new UserServiceImpl();
 
     @GetMapping
     public String index(Model model) {
